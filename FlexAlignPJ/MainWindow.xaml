@@ -19,6 +19,9 @@
             <Setter Property="Margin" Value="3"/>
             <Setter Property="Padding" Value="3"/>
         </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="3"/>
+        </Style>
         <Style TargetType="Button">
             <Setter Property="Margin" Value="3"/>
             <Setter Property="Padding" Value="3"/>
@@ -87,7 +90,43 @@
 
             <!--左下_マッチング設定-->
             <GroupBox Grid.Row="1" Header="Align settings">
-                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Button Grid.Row="0" Content="Execute" Command="{Binding ExecuteMatchingCommand}"/>
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" VerticalAlignment="Center" Orientation="Vertical">
+                            <TextBlock TextAlignment="Right" Text="{Binding TotalMatchPointsCount, StringFormat=Total points : {0}}"/>
+                            <TextBlock TextAlignment="Right" Text="{Binding UsePointsCount, StringFormat=Use points : {0}}"/>
+                            <TextBlock TextAlignment="Right" Text="{Binding UsePointsPercent, StringFormat=Usage : {0:N1}%}"/>
+                            <Button Content="Update matching" Command="{Binding UpdateMatchingImageCommand}"/>
+                        </StackPanel>
+                        
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="80"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Image Grid.Row="0" Margin="3" Stretch="Fill"
+                                   Source="{Binding MatchScoreHistogramBmp}"/>
+                            <Slider Grid.Row="1" Margin="3" Minimum="0.0" Maximum="1.0" SmallChange="0.01" LargeChange="0.2" Value="{Binding UsePointsRatio}"/>
+                        </Grid>
+                    </Grid>
+                    
+                    <Border Grid.Row="2" Margin="3" BorderThickness="1" BorderBrush="Gray">
+                        <Image Source="{Binding MatchResultBmp}"/>
+                    </Border>
+                </Grid>
             </GroupBox>
         </Grid>
 
