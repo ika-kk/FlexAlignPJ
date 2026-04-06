@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FlexAlignPJ"
         xmlns:vm="clr-namespace:FlexAlignPJ.ViewModels"
+        xmlns:v="clr-namespace:FlexAlignPJ.Views"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1440">
     <Window.DataContext>
@@ -61,9 +62,7 @@
                             <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding SourceImageFileName, Mode=OneWay}"/>
                             <Button Grid.Column="1" Content="reference" Command="{Binding ReferenceCommand}" CommandParameter="source"/>
                         </Grid>
-                        <Border Grid.Row="1" Margin="3" BorderThickness="1" BorderBrush="Gray">
-                            <Image Source="{Binding SourceBmp}"/>
-                        </Border>
+                        <v:InputImageControl Grid.Row="1" Margin="3" Image="{Binding SourceBmp}" Roi="{Binding SourceRoi}"/>
                     </Grid>
                 </GroupBox>
 
@@ -81,9 +80,7 @@
                             <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding TargetImageFileName, Mode=OneWay}"/>
                             <Button Grid.Column="1" Content="reference" Command="{Binding ReferenceCommand}" CommandParameter="target"/>
                         </Grid>
-                        <Border Grid.Row="1" Margin="3" BorderThickness="1" BorderBrush="Gray">
-                            <Image Source="{Binding TargetBmp}"/>
-                        </Border>
+                        <v:InputImageControl Grid.Row="1" Margin="3" Image="{Binding TargetBmp}" Roi="{Binding TargetRoi}"/>
                     </Grid>
                 </GroupBox>
             </Grid>
