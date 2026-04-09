@@ -122,7 +122,7 @@ namespace FlexAlignPJ.Views
             var width = MyRect.ActualWidth;
             var height = MyRect.ActualHeight;
 
-            if (width > 1 && height > 1)
+            if (width > MyRect.StrokeThickness && height > MyRect.StrokeThickness)
             {
                 UpdateMask(left, top, width, height);
             }

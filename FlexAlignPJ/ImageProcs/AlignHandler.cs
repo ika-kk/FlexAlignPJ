@@ -16,8 +16,6 @@ namespace FlexAlignPJ.ImageProcs
         private CourseAlign _CourseAlign;
         private double _UsePointsRatioCourse;
 
-
-
         /// <summary>マッチングした点対の数</summary>
         public int TotalMatchPointsCountCourse => _CourseAlign.TotalMatchPointsCount;
 

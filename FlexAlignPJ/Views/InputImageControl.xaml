@@ -39,7 +39,7 @@
                        MouseLeftButtonDown="MyMask_MouseLeftButtonDown"
                        MouseMove="MyMask_MouseMove"
                        MouseLeftButtonUp="MyMask_MouseLeftButtonUp"/>
-                <Rectangle x:Name="MyRect" Stroke="Magenta" Visibility="Hidden"
+                <Rectangle x:Name="MyRect" Stroke="Magenta" StrokeThickness="3" Visibility="Hidden"
                        MouseLeftButtonUp="MyMask_MouseLeftButtonUp"/>
             </Canvas>
         </Border>
