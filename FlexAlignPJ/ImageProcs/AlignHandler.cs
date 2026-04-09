@@ -1,4 +1,5 @@
 ﻿using OpenCvSharp;
+using OpenCvSharp.Dnn;
 using OpenCvSharp.WpfExtensions;
 using System;
 using System.Collections.Generic;
@@ -86,11 +87,30 @@ namespace FlexAlignPJ.ImageProcs
         /// Source画像とTarget画像を更新する。
         /// </summary>
         /// <param name="source">元画像</param>
-        /// <param name="target">合わせ込み先の画像</param>
+        /// <param name="target">合わせ込み先画像</param>
         public void MatchImages(WriteableBitmap source, WriteableBitmap target)
         {
             _Source = source.ToMat();
             _Target = target.ToMat();
+            Match(_Source, _Target);
+            UpdateMatchingResultImage();
+        }
+
+        /// <summary>
+        /// Source画像とTarget画像を更新する。
+        /// </summary>
+        /// <param name="source">元画像</param>
+        /// <param name="target">合わせ込み先画像</param>
+        /// <param name="sourceRoi">元画像のROI</param>
+        /// <param name="sourceRoi">合わせ込み先画像のROI</param>
+        public void MatchImages(WriteableBitmap source, WriteableBitmap target, OpenCvSharp.Rect sourceRoi, OpenCvSharp.Rect targetRoi)
+        {
+            using (var tempSource = source.ToMat())
+            using (var tempTarget = target.ToMat())
+            {
+                _Source = new Mat(tempSource, sourceRoi);
+                _Target = new Mat(tempTarget, targetRoi);
+            }
             Match(_Source, _Target);
             UpdateMatchingResultImage();
         }
@@ -102,6 +122,7 @@ namespace FlexAlignPJ.ImageProcs
         {
             using (var matchResult = new Mat())
             {
+                Ransac(_DMatches, UsePointsCount);
                 var debugMatches = _DMatches
                     .OrderBy(s => s.Distance)
                     .Take(UsePointsCount)
@@ -160,6 +181,27 @@ namespace FlexAlignPJ.ImageProcs
                 bmp.DrawLine(x, _HistogramHeight, x, _HistogramHeight - y - 3, _HistogramColor);
             }
             return bmp;
+        }
+
+        private void Ransac(DMatch[] matches, int usePointsCount)
+        {
+            var useMatches = matches
+                .OrderBy(s => s.Distance)
+                .Take(usePointsCount).Select(s => (_KeyPointsSource[s.QueryIdx], _KeyPointsTarget[s.TrainIdx]))
+                .ToArray();
+
+            using (var sourcePoints = InputArray.Create(matches.Select(s => _KeyPointsSource[s.QueryIdx].Pt)))
+            using (var targetPoints = InputArray.Create(matches.Select(s => _KeyPointsTarget[s.TrainIdx].Pt)))
+            using (var homoMat = Cv2.FindHomography(sourcePoints, targetPoints, HomographyMethods.Ransac))
+            {
+                var warpedSource = new Mat();
+                Cv2.WarpPerspective(_Source, warpedSource, homoMat, _Target.Size());
+                // debug
+                //warpedSource.ImWrite("_warped.png");
+                //_Source.ImWrite("_source.png");
+                //_Target.ImWrite("_target.png");
+            }
+
         }
 
         #endregion

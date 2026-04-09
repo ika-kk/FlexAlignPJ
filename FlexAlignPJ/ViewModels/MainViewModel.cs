@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using FlexAlignPJ.ImageProcs;
 using Microsoft.Win32;
+using OpenCvSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,6 +25,8 @@ namespace FlexAlignPJ.ViewModels
         private WriteableBitmap _TargetBmp;
         private WriteableBitmap _MatchScoreHistogramBmp;
         private WriteableBitmap _MatchResultBmp;
+        private OpenCvSharp.Rect _SourceRoi;
+        private OpenCvSharp.Rect _TargetRoi;
         private int _TotalMatchPointsCount = 0;
         private double _UsePointsRatio = 0.2;
         private int _UsePointsCount = 0;
@@ -51,6 +54,19 @@ namespace FlexAlignPJ.ViewModels
         public WriteableBitmap TargetBmp
         {
             get => _TargetBmp; set => SetProperty(ref _TargetBmp, value);
+        }
+
+        /// <summary>Source画像のROI</summary>
+        public OpenCvSharp.Rect SourceRoi
+        {
+            get => _SourceRoi;
+            set => SetProperty(ref _SourceRoi, value);
+        }
+
+        /// <summary>Target画像のROI</summary>
+        public OpenCvSharp.Rect TargetRoi
+        {
+            get => _TargetRoi; set => SetProperty(ref _TargetRoi, value);
         }
 
         /// <summary>マッチングスコアのヒストグラム画像</summary>
@@ -168,7 +184,7 @@ namespace FlexAlignPJ.ViewModels
             {
                 // マッチング設定・実行
                 _AlignHandler.UsePointsRatio = UsePointsRatio;
-                _AlignHandler.MatchImages(SourceBmp, TargetBmp);
+                _AlignHandler.MatchImages(SourceBmp, TargetBmp, SourceRoi, TargetRoi);
 
                 // 結果取得
                 MatchScoreHistogramBmp = _AlignHandler.MatchScoreHistogramBmp;
