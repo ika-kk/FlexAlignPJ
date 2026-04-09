@@ -106,7 +106,6 @@
                             <TextBlock TextAlignment="Right" Text="{Binding TotalMatchPointsCount, StringFormat=Total points : {0}}"/>
                             <TextBlock TextAlignment="Right" Text="{Binding UsePointsCount, StringFormat=Use points : {0}}"/>
                             <TextBlock TextAlignment="Right" Text="{Binding UsePointsPercent, StringFormat=Usage : {0:N1}%}"/>
-                            <Button Content="Update matching" Command="{Binding UpdateMatchingImageCommand}"/>
                         </StackPanel>
                         
                         <Grid Grid.Column="1">

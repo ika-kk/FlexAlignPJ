@@ -100,6 +100,8 @@ namespace FlexAlignPJ.ViewModels
                 // 表示用の関連プロパティを更新
                 UsePointsCount = (int)(TotalMatchPointsCount * value);
                 UsePointsPercent = value * 100;
+
+                UpdateMatchingImage();
             }
         }
 
@@ -183,14 +185,14 @@ namespace FlexAlignPJ.ViewModels
             if (SourceBmp is not null &&  TargetBmp is not null)
             {
                 // マッチング設定・実行
-                _AlignHandler.UsePointsRatio = UsePointsRatio;
-                _AlignHandler.MatchImages(SourceBmp, TargetBmp, SourceRoi, TargetRoi);
+                _AlignHandler.UsePointsRatioCourse = UsePointsRatio;
+                _AlignHandler.CourseMatchImages(SourceBmp, TargetBmp, SourceRoi, TargetRoi);
 
                 // 結果取得
-                MatchScoreHistogramBmp = _AlignHandler.MatchScoreHistogramBmp;
+                MatchScoreHistogramBmp = _AlignHandler.MatchScoreHistogramBmpCourse;
                 MatchResultBmp = _AlignHandler.MatchResultBmp;
-                TotalMatchPointsCount = _AlignHandler.TotalMatchPointsCount;
-                UsePointsCount = _AlignHandler.UsePointsCount;
+                TotalMatchPointsCount = _AlignHandler.TotalMatchPointsCountCourse;
+                UsePointsCount = _AlignHandler.UsePointsCountCourse;
             }
             else
             {
@@ -206,8 +208,8 @@ namespace FlexAlignPJ.ViewModels
         {
             try
             {
-                _AlignHandler.UsePointsRatio = UsePointsRatio;
-                _AlignHandler.UpdateMatchingResultImage();
+                _AlignHandler.UsePointsRatioCourse = UsePointsRatio;
+                _AlignHandler.UpdateMatchingResultImageCourse();
                 MatchResultBmp = _AlignHandler.MatchResultBmp;
             }
             catch (Exception ex)
